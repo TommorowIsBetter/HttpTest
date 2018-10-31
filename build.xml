@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse.ant.import?>
+
+<project basedir="." default="build" name="HttpTest">
+    <property environment="env"/>
+    <property name="bin" value="bin"/> 
+	<property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/> 
+ 
+    <path id="HttpTest.classpath">
+        <pathelement location="bin/core"/> 
+    	<pathelement location="bin/helper"/> 
+        <pathelement location="lib/unpacked/commons-codec-1.6.jar"/>  
+    	<pathelement location="lib/unpacked/fluent-hc-4.2.4.jar"/>  
+        <pathelement location="lib/unpacked/httpclient-4.2.4.jar"/>  
+    	<pathelement location="lib/unpacked/httpcore-4.2.4.jar"/>  
+        <pathelement location="lib/unpacked/commons-logging-1.1.1.jar"/> 
+        <pathelement location="lib/unpacked/commons-logging-api-1.1.jar"/>  
+    </path> 
+	
+    <target name="init">
+        <mkdir dir="bin/core"/>
+        <copy includeemptydirs="false" todir="bin/core">
+            <fileset dir="src/main">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+	
+    <target name="clean">
+        <delete dir="bin"/>
+    </target> 
+ 
+    <target depends="init" name="build">
+        <echo message="${ant.project.name}: ${ant.file}"/> 
+    	<javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+    	    <src path="src/main"/>
+    	    <classpath refid="HttpTest.classpath"/>
+    	</javac>
+    </target>   
+              	
+	<target name="export" depends="build">
+		<jar destfile="test.jar" basedir="bin/core" excludes="">    
+			<zipgroupfileset dir="lib" includes="*.jar" excludes="**/unpacked/"/>
+			<manifest>
+				<attribute name="Build-By" value="${user.name}"/>
+				<attribute name="Main-Class" value="TestCase"/>
+			</manifest>
+		</jar>
+	</target>
+</project>
