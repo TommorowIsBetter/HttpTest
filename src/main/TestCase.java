@@ -22,7 +22,7 @@ public class TestCase implements Runnable{
 	static {
 		try{
 			Properties props = new Properties();
-			props.load(TestCase.class.getResourceAsStream("getfile.properties"));
+			props.load(TestCase.class.getResourceAsStream("downloadfile.properties"));
 			URL = props.getProperty("url");
 			DST = props.getProperty("dst");
 			NAME= props.getProperty("name");
@@ -70,7 +70,7 @@ public class TestCase implements Runnable{
 	}
 	
 	public static void main(String[] args) throws Exception {
-		TestSessionListenerImpl impl = new TestSessionListenerImpl("createfile");
+		TestSessionListenerImpl impl = new TestSessionListenerImpl("downloadfile");
 		TestCase main = new TestCase(impl);
 		main.run();
 	}
@@ -86,7 +86,7 @@ public class TestCase implements Runnable{
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();
         //设置超时间为3秒
-        conn.setConnectTimeout(3*1000);
+        //conn.setConnectTimeout(10000000);
         //防止屏蔽程序抓取而返回403错误
         conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
         conn.setRequestProperty("lfwywxqyh_token",toekn);
